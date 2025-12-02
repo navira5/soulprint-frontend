@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    @apply font-sans;
+  }
+
+  body {
+    @apply antialiased bg-[#0a0a0a] text-[#e8e8e8];
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-light;
+    letter-spacing: 0.02em;
+  }
+}
