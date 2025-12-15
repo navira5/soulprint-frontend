@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Upload, X, FileText } from 'lucide-react';
+import { Plus, X, FileText } from 'lucide-react';
 import { useUploadStore } from '../../store/uploadStore';
 
-export default function FileUpload() {
+export default function FileUpload({ personaName }) {
   const { file, setFile } = useUploadStore();
   const [dragActive, setDragActive] = useState(false);
 
@@ -17,13 +17,13 @@ export default function FileUpload() {
   };
 
   const validateFile = (file) => {
-    const allowedTypes = ['.txt', '.pdf', 'text/plain', 'application/pdf'];
+    const allowedTypes = ['.txt', '.pdf', '.csv', 'text/plain', 'application/pdf', 'text/csv'];
     const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
     const isValidType =
       allowedTypes.includes(file.type) || allowedTypes.includes(fileExtension);
 
     if (!isValidType) {
-      alert('Please upload a .txt or .pdf file');
+      alert('Please upload a .txt, .pdf, or .csv file');
       return false;
     }
 
@@ -62,18 +62,24 @@ export default function FileUpload() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900">Upload Transcript</h3>
+    <div className="space-y-6">
+      {/* Title */}
+      <div className="text-center">
+        <p className="text-lg text-gray-400 font-light tracking-wide mb-8">
+          Upload transcripts, interviews, or writings for {personaName || 'your persona'}
+        </p>
+      </div>
 
+      {/* Upload Area */}
       {!file ? (
         <div
           className={`
-            relative border-2 border-dashed rounded-lg p-12 text-center
+            relative border-2 border-dashed py-32 px-24 text-center
             transition-colors cursor-pointer
             ${
               dragActive
-                ? 'border-primary-500 bg-primary-50'
-                : 'border-gray-300 bg-gray-50 hover:border-primary-400'
+                ? 'border-gray-500 bg-gray-900/50'
+                : 'border-gray-700 bg-transparent hover:border-gray-600'
             }
           `}
           onDragEnter={handleDrag}
@@ -86,27 +92,27 @@ export default function FileUpload() {
             id="file-input"
             type="file"
             className="hidden"
-            accept=".txt,.pdf"
+            accept=".txt,.pdf,.csv"
             onChange={handleChange}
           />
 
-          <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <p className="text-lg font-medium text-gray-700 mb-2">
-            Drop your transcript here
+          <Plus className="w-20 h-20 mx-auto mb-8 text-gray-500" />
+          <p className="text-2xl font-light text-[#e8e8e8] mb-3">
+            Drop document
           </p>
-          <p className="text-sm text-gray-500">
-            or click to browse (.txt or .pdf files)
+          <p className="text-base text-gray-500 tracking-widest">
+            TXT · PDF · CSV
           </p>
         </div>
       ) : (
-        <div className="border-2 border-primary-500 rounded-lg p-6 bg-primary-50">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start space-x-3">
-              <FileText className="w-8 h-8 text-primary-600 flex-shrink-0 mt-1" />
+        <div className="border-2 border-gray-700 bg-gray-900/30 p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <FileText className="w-8 h-8 text-gray-400 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-900 truncate">{file.name}</p>
-                <p className="text-sm text-gray-600">
-                  {(file.size / 1024).toFixed(2)} KB
+                <p className="font-light text-[#e8e8e8] truncate">{file.name}</p>
+                <p className="text-sm text-gray-500">
+                  {(file.size / 1024).toFixed(0)} KB
                 </p>
               </div>
             </div>
@@ -115,7 +121,7 @@ export default function FileUpload() {
                 e.stopPropagation();
                 clearFile();
               }}
-              className="p-1 rounded-full hover:bg-primary-100 text-gray-600 hover:text-gray-900 transition-colors"
+              className="p-2 text-gray-500 hover:text-gray-300 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>

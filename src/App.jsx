@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
-import HomePage from './pages/HomePageNew';
+import HomePage from './pages/HomePage';
 import CreatePersonaPage from './pages/CreatePersonaPage';
 import ResultsPage from './pages/ResultsPage';
 import ChatPage from './pages/ChatPage';
