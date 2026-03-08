@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronLeft } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import { usePersonaStore } from '../store/personaStore';
+import { applyMessageFeedback } from '../api/endpoints';
 import ChatMessage from '../components/chat/ChatMessage';
 import ChatInput from '../components/chat/ChatInput';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
@@ -17,7 +18,7 @@ export default function ChatPage() {
 
   const [showPersonaDropdown, setShowPersonaDropdown] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('soulhouse-theme');
+    const saved = localStorage.getItem('soulprint-theme');
     return saved === null ? true : saved === 'dark';
   });
 
@@ -33,11 +34,16 @@ export default function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem('soulhouse-theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('soulprint-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  // Handler for per-message voice feedback
+  const handleMessageFeedback = async (sessionId, messageIndex, feedbackText) => {
+    return applyMessageFeedback(sessionId, messageIndex, feedbackText);
   };
 
   const bgColor = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-white';
@@ -121,7 +127,7 @@ export default function ChatPage() {
             )}
           </div>
 
-          {/* Right: Theme Toggle + SOULHOUSE */}
+          {/* Right: Theme Toggle + SOULPRINT */}
           <div className="flex items-center gap-8">
             <button
               onClick={toggleTheme}
@@ -130,7 +136,7 @@ export default function ChatPage() {
               {isDarkMode ? 'LIGHT' : 'DARK'}
             </button>
             <div className={`text-sm tracking-widest ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
-              SOULHOUSE
+              SOULPRINT
             </div>
           </div>
         </div>
@@ -145,9 +151,24 @@ export default function ChatPage() {
             </div>
           ) : (
             <>
-              {messages.map((msg, idx) => (
-                <ChatMessage key={idx} message={msg} personaName={id} isDarkMode={isDarkMode} />
-              ))}
+              {messages.map((msg, idx) => {
+                // Calculate assistant message index for feedback
+                const assistantIndex = msg.role === 'assistant'
+                  ? messages.slice(0, idx + 1).filter(m => m.role === 'assistant').length - 1
+                  : null;
+
+                return (
+                  <ChatMessage
+                    key={idx}
+                    message={msg}
+                    personaName={id}
+                    isDarkMode={isDarkMode}
+                    messageIndex={assistantIndex}
+                    sessionId={sessionId}
+                    onFeedbackSubmit={handleMessageFeedback}
+                  />
+                );
+              })}
               {isLoading && (
                 <div className="flex justify-start mb-8">
                   <div className="space-y-2">
@@ -157,6 +178,13 @@ export default function ChatPage() {
                     <div className={`${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
                       <p className="font-light">Thinking...</p>
                     </div>
+                  </div>
+                </div>
+              )}
+              {error && sessionId && (
+                <div className="flex justify-start mb-8">
+                  <div className="border border-red-900 bg-red-950/20 rounded-lg p-4 max-w-2xl">
+                    <p className="text-red-400 font-light">Error: {error}</p>
                   </div>
                 </div>
               )}

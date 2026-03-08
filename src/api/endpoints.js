@@ -43,6 +43,14 @@ export const applyFeedback = async (personaId, feedbackText) => {
   });
 };
 
+export const applyMessageFeedback = async (sessionId, messageIndex, feedbackText) => {
+  return apiClient.post('/persona/chat/feedback', {
+    session_id: sessionId,
+    message_index: messageIndex,
+    feedback_text: feedbackText,
+  });
+};
+
 export const analyzeTranscript = async (file, personaName) => {
   const formData = new FormData();
   formData.append('file', file);

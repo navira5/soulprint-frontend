@@ -26,7 +26,7 @@ A React-based web interface for Soulprint personality analysis platform. Upload 
 ## Prerequisites
 
 - Node.js 16+ and npm
-- Backend API server running (see vigil-analyzer repository)
+- Backend API server running (see soulprint-analyzer repository)
 
 ## Installation
 

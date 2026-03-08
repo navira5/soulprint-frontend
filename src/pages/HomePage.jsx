@@ -67,10 +67,10 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
-      {/* SOULHOUSE Logo - Top Left with full-width line */}
+      {/* SOULPRINT Logo - Top Left with full-width line */}
       <div className="absolute top-0 left-0 right-0">
         <div className="px-8 pt-8 pb-4 border-b border-gray-800">
-          <h2 className="text-sm font-normal tracking-[0.25em] text-[#e8e8e8] uppercase" style={{ fontFamily: 'Inter, -apple-system, sans-serif' }}>SOULHOUSE</h2>
+          <h2 className="text-sm font-normal tracking-[0.25em] text-[#e8e8e8] uppercase" style={{ fontFamily: 'Inter, -apple-system, sans-serif' }}>SOULPRINT</h2>
         </div>
       </div>
 

@@ -540,7 +540,7 @@ VITE_API_BASE_URL=http://localhost:5001
 
 3. **Start Backend**
 \`\`\`bash
-# In vigil-analyzer directory
+# In soulprint-analyzer directory
 python3 app.py
 \`\`\`
 
