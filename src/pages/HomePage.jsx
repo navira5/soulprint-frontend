@@ -69,18 +69,18 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* SOULPRINT Logo - Top Left with full-width line */}
       <div className="absolute top-0 left-0 right-0">
-        <div className="px-8 pt-8 pb-4 border-b border-gray-800">
+        <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-gray-800">
           <h2 className="text-sm font-normal tracking-[0.25em] text-[#e8e8e8] uppercase" style={{ fontFamily: 'Inter, -apple-system, sans-serif' }}>SOULPRINT</h2>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-8 pt-80 pb-40">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-32 sm:pt-80 pb-20 sm:pb-40">
         {/* Hero Section */}
-        <div className="text-center mb-24">
-          <h1 className="text-[96px] italic text-[#e8e8e8] mb-6 leading-[1.1] tracking-normal" style={{ fontFamily: 'Cormorant Garamond', fontWeight: 400 }}>
+        <div className="text-center mb-12 sm:mb-24">
+          <h1 className="text-5xl sm:text-[96px] italic text-[#e8e8e8] mb-4 sm:mb-6 leading-[1.1] tracking-normal" style={{ fontFamily: 'Cormorant Garamond', fontWeight: 400 }}>
             Conversations<br />with anyone
           </h1>
-          <p className="text-xl font-light text-gray-400 tracking-wide">
+          <p className="text-base sm:text-xl font-light text-gray-400 tracking-wide">
             Upload their words. Build your council.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
 
         {/* Upload Form - Only show when CREATE PERSONA is selected */}
         {selectedMode === 'human' && (
-          <div className="max-w-4xl mx-auto mt-32">
+          <div className="max-w-4xl mx-auto mt-16 sm:mt-32">
             <form onSubmit={handleSubmit} className="space-y-12">
               {/* Persona Name Input */}
               <div className="space-y-4">

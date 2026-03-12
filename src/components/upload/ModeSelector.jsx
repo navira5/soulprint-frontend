@@ -13,11 +13,11 @@ export default function ModeSelector() {
   const isDarkMode = true; // Matches the dark theme from your screenshot
 
   return (
-    <div className="flex items-center justify-center gap-6 mb-20">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mb-12 sm:mb-20">
       {/* CREATE PERSONA Button */}
       <button
         onClick={() => setMode('human')}
-        className={`px-16 py-5 text-xl font-light tracking-widest transition-all duration-300 ${
+        className={`w-full sm:w-auto px-8 sm:px-16 py-3 sm:py-5 text-sm sm:text-xl font-light tracking-widest transition-all duration-300 ${
           selectedMode === 'human'
             ? 'bg-white text-black border-2 border-white'
             : 'bg-transparent text-gray-400 border-2 border-gray-700 hover:border-gray-500 hover:text-gray-300'
@@ -27,17 +27,17 @@ export default function ModeSelector() {
       </button>
 
       {/* YOUR COUNCIL Dropdown */}
-      <div className="relative">
+      <div className="relative w-full sm:w-auto">
         <button
           onClick={() => setShowCouncilDropdown(!showCouncilDropdown)}
-          className={`px-16 py-5 text-xl font-light tracking-widest transition-all duration-300 flex items-center gap-3 ${
+          className={`w-full sm:w-auto px-8 sm:px-16 py-3 sm:py-5 text-sm sm:text-xl font-light tracking-widest transition-all duration-300 flex items-center justify-center gap-3 ${
             selectedMode === 'council'
               ? 'bg-black text-white border-2 border-gray-700'
               : 'bg-transparent text-gray-400 border-2 border-gray-700 hover:border-gray-500 hover:text-gray-300'
           }`}
         >
           <span>YOUR COUNCIL</span>
-          <ChevronDown className="w-6 h-6" />
+          <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {showCouncilDropdown && personas.length > 0 && (

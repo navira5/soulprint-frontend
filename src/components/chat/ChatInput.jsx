@@ -16,16 +16,15 @@ export default function ChatInput({ onSend, disabled, isDarkMode }) {
 
   return (
     <form onSubmit={handleSubmit} className={`border-t ${formBorderColor} ${bgColor}`}>
-      <div className="max-w-4xl mx-auto px-8 py-8">
-        <div className="flex gap-4 items-stretch">
+      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
+        <div className="flex gap-2 sm:gap-4 items-stretch">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything..."
             disabled={disabled}
-            style={{ minHeight: '56px' }}
-            className={`flex-1 ${bgColor} px-6 py-4 text-base font-light focus:outline-none transition-colors duration-500 ${
+            className={`flex-1 ${bgColor} px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light focus:outline-none transition-colors duration-500 min-w-0 ${
               isDarkMode
                 ? 'text-white placeholder-gray-500 border-2 border-gray-600 focus:border-gray-500'
                 : 'text-gray-900 placeholder-gray-400 border-2 border-gray-300 focus:border-gray-400'
@@ -34,7 +33,7 @@ export default function ChatInput({ onSend, disabled, isDarkMode }) {
           <button
             type="submit"
             disabled={disabled || !input.trim()}
-            className={`px-10 py-4 text-sm tracking-widest font-light border-2 transition-all duration-500 ${
+            className={`px-5 sm:px-10 py-3 sm:py-4 text-xs sm:text-sm tracking-widest font-light border-2 transition-all duration-500 shrink-0 ${
               disabled || !input.trim()
                 ? `${formBorderColor} bg-transparent opacity-40 cursor-not-allowed ${isDarkMode ? 'text-gray-700' : 'text-gray-400'}`
                 : isDarkMode

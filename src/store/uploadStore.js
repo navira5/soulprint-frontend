@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+
 // Helper function to simulate progress for Human mode
 const simulateProgress = (setStateFn, startProgress, endProgress, durationMs) => {
   const steps = 20; // Number of progress updates
@@ -157,8 +159,8 @@ export const useUploadStore = create((set, get) => ({
         const progressInterval = simulateProgress(set, 10, 90, 180000);
         set({ progressSimulationInterval: progressInterval });
 
-        console.log('🚀 [Human Mode] Sending to http://localhost:5001/api/analyze/transcript');
-        const response = await fetch('http://localhost:5001/api/analyze/transcript', {
+        console.log('🚀 [Human Mode] Sending to ${API_BASE_URL}/api/analyze/transcript');
+        const response = await fetch('${API_BASE_URL}/api/analyze/transcript', {
           method: 'POST',
           body: formData,
         });
@@ -208,8 +210,8 @@ export const useUploadStore = create((set, get) => ({
 
       set({ uploadProgress: 10, progressMessage: 'Starting Vigil analysis...' });
 
-      console.log('🚀 [Vigil Mode] Starting job at http://localhost:5001/api/vigil/start');
-      const startResponse = await fetch('http://localhost:5001/api/vigil/start', {
+      console.log('🚀 [Vigil Mode] Starting job at ${API_BASE_URL}/api/vigil/start');
+      const startResponse = await fetch('${API_BASE_URL}/api/vigil/start', {
         method: 'POST',
         body: formData,
       });
@@ -233,7 +235,7 @@ export const useUploadStore = create((set, get) => ({
         const pollInterval = setInterval(async () => {
           try {
             console.log('🔄 [Vigil Mode] Polling status for job:', job_id);
-            const statusResponse = await fetch(`http://localhost:5001/api/vigil/status/${job_id}`);
+            const statusResponse = await fetch(`${API_BASE_URL}/api/vigil/status/${job_id}`);
 
             if (!statusResponse.ok) {
               throw new Error('Failed to check job status');

@@ -76,29 +76,29 @@ export default function ChatPage() {
   return (
     <div className={`flex flex-col h-screen ${bgColor} ${textColor}`}>
       {/* Header */}
-      <header className={`border-b ${borderColor} px-8 py-6`}>
+      <header className={`border-b ${borderColor} px-4 sm:px-8 py-4 sm:py-6`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           {/* Left: Back Button */}
           <button
             onClick={() => navigate('/')}
-            className={`flex items-center gap-2 text-sm tracking-wide text-gray-500 hover:text-gray-400 transition-colors duration-500`}
+            className={`flex items-center gap-1 sm:gap-2 text-sm tracking-wide text-gray-500 hover:text-gray-400 transition-colors duration-500`}
           >
             <ChevronLeft className="w-5 h-5" />
-            <span>BACK</span>
+            <span className="hidden sm:inline">BACK</span>
           </button>
 
           {/* Center: Persona Dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowPersonaDropdown(!showPersonaDropdown)}
-              className="flex items-center gap-2 text-base font-light tracking-wide hover:text-gray-400 transition-colors duration-500 capitalize"
+              className="flex items-center gap-1 sm:gap-2 text-base font-light tracking-wide hover:text-gray-400 transition-colors duration-500 capitalize"
             >
               <span>{id}</span>
-              <ChevronDown className="w-5 h-5" />
+              <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
             {showPersonaDropdown && (
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 ${isDarkMode ? 'bg-black' : 'bg-white'} border ${isDarkMode ? 'border-gray-800' : 'border-gray-200'} min-w-[200px] z-50`}>
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 ${isDarkMode ? 'bg-black' : 'bg-white'} border ${isDarkMode ? 'border-gray-800' : 'border-gray-200'} min-w-[200px] max-w-[90vw] z-50`}>
                 <div className={`text-sm tracking-widest ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} px-4 py-3 border-b ${isDarkMode ? 'border-gray-900' : 'border-gray-200'}`}>
                   YOUR COUNCIL
                 </div>
@@ -128,14 +128,14 @@ export default function ChatPage() {
           </div>
 
           {/* Right: Theme Toggle + SOULPRINT */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3 sm:gap-8">
             <button
               onClick={toggleTheme}
-              className={`text-sm tracking-widest ${isDarkMode ? 'text-gray-500 hover:text-gray-400' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-500`}
+              className={`text-xs sm:text-sm tracking-widest ${isDarkMode ? 'text-gray-500 hover:text-gray-400' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-500`}
             >
               {isDarkMode ? 'LIGHT' : 'DARK'}
             </button>
-            <div className={`text-sm tracking-widest ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
+            <div className={`hidden sm:block text-sm tracking-widest ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
               SOULPRINT
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function ChatPage() {
       </header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-8 py-12">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 sm:py-12">
         <div className="max-w-4xl mx-auto">
           {messages.length === 0 ? (
             <div className={`text-center ${isDarkMode ? 'text-gray-600' : 'text-gray-500'} mt-20`}>

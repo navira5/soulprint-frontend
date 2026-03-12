@@ -65,7 +65,7 @@ export default function FileUpload({ personaName }) {
     <div className="space-y-6">
       {/* Title */}
       <div className="text-center">
-        <p className="text-lg text-gray-400 font-light tracking-wide mb-8">
+        <p className="text-base sm:text-lg text-gray-400 font-light tracking-wide mb-6 sm:mb-8">
           Upload transcripts, interviews, or writings for {personaName || 'your persona'}
         </p>
       </div>
@@ -74,7 +74,7 @@ export default function FileUpload({ personaName }) {
       {!file ? (
         <div
           className={`
-            relative border-2 border-dashed py-32 px-24 text-center
+            relative border-2 border-dashed py-16 px-8 sm:py-32 sm:px-24 text-center
             transition-colors cursor-pointer
             ${
               dragActive
@@ -96,11 +96,11 @@ export default function FileUpload({ personaName }) {
             onChange={handleChange}
           />
 
-          <Plus className="w-20 h-20 mx-auto mb-8 text-gray-500" />
-          <p className="text-2xl font-light text-[#e8e8e8] mb-3">
+          <Plus className="w-12 h-12 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-8 text-gray-500" />
+          <p className="text-lg sm:text-2xl font-light text-[#e8e8e8] mb-2 sm:mb-3">
             Drop document
           </p>
-          <p className="text-base text-gray-500 tracking-widest">
+          <p className="text-sm sm:text-base text-gray-500 tracking-widest">
             TXT · PDF · CSV
           </p>
         </div>

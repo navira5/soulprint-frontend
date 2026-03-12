@@ -49,9 +49,9 @@ export default function ChatMessage({
   if (isUser) {
     // User messages - right aligned, italic (no feedback option)
     return (
-      <div className="flex justify-end mb-12">
-        <div className="max-w-3xl">
-          <p className={`text-base font-light italic leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+      <div className="flex justify-end mb-8 sm:mb-12">
+        <div className="max-w-[85%] sm:max-w-3xl">
+          <p className={`text-sm sm:text-base font-light italic leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
             {message.content}
           </p>
         </div>
@@ -61,8 +61,8 @@ export default function ChatMessage({
 
   // Persona messages - left aligned with label and feedback option
   return (
-    <div className="flex justify-start mb-12 group">
-      <div className="max-w-3xl space-y-3 w-full">
+    <div className="flex justify-start mb-8 sm:mb-12 group">
+      <div className="max-w-full sm:max-w-3xl space-y-2 sm:space-y-3 w-full">
         {/* Header row with persona name and feedback button */}
         <div className="flex items-center justify-between">
           <div className={`text-sm tracking-widest ${isDarkMode ? 'text-gray-600' : 'text-gray-400'} uppercase`}>
@@ -87,7 +87,7 @@ export default function ChatMessage({
 
         {/* Message content */}
         <div className={`${isDarkMode ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
-          <p className="whitespace-pre-wrap font-light leading-relaxed">{message.content}</p>
+          <p className="whitespace-pre-wrap font-light leading-relaxed text-sm sm:text-base">{message.content}</p>
         </div>
 
         {/* Inline feedback form */}
