@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronDown, ChevronLeft } from 'lucide-react';
+import { ChevronDown, ChevronLeft, Clock, Plus } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import { usePersonaStore } from '../store/personaStore';
 import { applyMessageFeedback } from '../api/endpoints';
@@ -14,9 +14,10 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
 
   const { personas, fetchPersonas } = usePersonaStore();
-  const { sessionId, messages, isLoading, error, initSession, sendMessage } = useChatStore();
+  const { sessionId, messages, isLoading, error, initSession, sendMessage, pastSessions, fetchPastSessions } = useChatStore();
 
   const [showPersonaDropdown, setShowPersonaDropdown] = useState(false);
+  const [showSessionPicker, setShowSessionPicker] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('soulprint-theme');
     return saved === null ? true : saved === 'dark';
@@ -24,10 +25,25 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (id) {
-      initSession(id);
+      // Check if there's a recent session to auto-resume
+      const lastSessionKey = `soulprint-last-session-${id}`;
+      const lastSessionId = localStorage.getItem(lastSessionKey);
+      if (lastSessionId) {
+        initSession(id, lastSessionId);
+      } else {
+        initSession(id);
+      }
+      fetchPastSessions(id);
     }
     fetchPersonas();
-  }, [id, initSession, fetchPersonas]);
+  }, [id, initSession, fetchPersonas, fetchPastSessions]);
+
+  // Persist current session ID for auto-resume
+  useEffect(() => {
+    if (sessionId && id) {
+      localStorage.setItem(`soulprint-last-session-${id}`, sessionId);
+    }
+  }, [sessionId, id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -127,8 +143,58 @@ export default function ChatPage() {
             )}
           </div>
 
-          {/* Right: Theme Toggle + SOULPRINT */}
-          <div className="flex items-center gap-3 sm:gap-8">
+          {/* Right: New Chat + Sessions + Theme Toggle + SOULPRINT */}
+          <div className="flex items-center gap-2 sm:gap-6">
+            {/* New Chat */}
+            <button
+              onClick={() => {
+                localStorage.removeItem(`soulprint-last-session-${id}`);
+                initSession(id);
+              }}
+              className={`p-2 sm:px-3 sm:py-1.5 text-xs tracking-widest ${isDarkMode ? 'text-gray-500 hover:text-gray-400' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-500`}
+              title="New conversation"
+            >
+              <Plus className="w-4 h-4 sm:hidden" />
+              <span className="hidden sm:inline">NEW</span>
+            </button>
+
+            {/* Session History */}
+            <div className="relative">
+              <button
+                onClick={() => setShowSessionPicker(!showSessionPicker)}
+                className={`p-2 sm:px-3 sm:py-1.5 text-xs tracking-widest ${isDarkMode ? 'text-gray-500 hover:text-gray-400' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-500`}
+                title="Past conversations"
+              >
+                <Clock className="w-4 h-4 sm:hidden" />
+                <span className="hidden sm:inline">HISTORY</span>
+              </button>
+
+              {showSessionPicker && pastSessions.length > 0 && (
+                <div className={`absolute top-full right-0 mt-2 ${isDarkMode ? 'bg-black border-gray-800' : 'bg-white border-gray-200'} border min-w-[240px] max-w-[90vw] z-50`}>
+                  <div className={`text-xs tracking-widest ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} px-4 py-2 border-b ${isDarkMode ? 'border-gray-900' : 'border-gray-200'}`}>
+                    PAST CONVERSATIONS
+                  </div>
+                  {pastSessions.slice(0, 10).map((session) => (
+                    <button
+                      key={session.session_id}
+                      onClick={() => {
+                        initSession(id, session.session_id);
+                        setShowSessionPicker(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 ${hoverBg} transition-colors duration-300 border-b ${isDarkMode ? 'border-gray-900' : 'border-gray-200'}`}
+                    >
+                      <div className={`text-sm font-light ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {session.message_count} messages
+                      </div>
+                      <div className={`text-xs ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
+                        {new Date(session.last_updated).toLocaleDateString()}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={toggleTheme}
               className={`text-xs sm:text-sm tracking-widest ${isDarkMode ? 'text-gray-500 hover:text-gray-400' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-500`}

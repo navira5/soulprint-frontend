@@ -28,8 +28,14 @@ export const getPersonaSoulSeed = async (personaId) => {
   });
 };
 
-export const initChatSession = async (personaId) => {
-  return apiClient.post('/persona/chat/init', { persona_id: personaId });
+export const initChatSession = async (personaId, sessionId = null) => {
+  const payload = { persona_id: personaId };
+  if (sessionId) payload.session_id = sessionId;
+  return apiClient.post('/persona/chat/init', payload);
+};
+
+export const listChatSessions = async (personaId) => {
+  return apiClient.get('/persona/chat/sessions', { params: { persona_id: personaId } });
 };
 
 export const sendChatMessage = async (sessionId, message) => {

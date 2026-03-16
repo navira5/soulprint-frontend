@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { initChatSession, sendChatMessage } from '../api/endpoints';
+import { initChatSession, sendChatMessage, listChatSessions } from '../api/endpoints';
 
 export const useChatStore = create((set, get) => ({
   sessionId: null,
@@ -7,23 +7,41 @@ export const useChatStore = create((set, get) => ({
   messages: [],
   isLoading: false,
   error: null,
+  pastSessions: [],
 
-  initSession: async (personaId) => {
-    console.log('[chatStore] initSession called with:', personaId);
+  initSession: async (personaId, resumeSessionId = null) => {
+    console.log('[chatStore] initSession called with:', personaId, resumeSessionId ? `(resuming ${resumeSessionId})` : '(new)');
     set({ isLoading: true, error: null });
     try {
-      const response = await initChatSession(personaId);
+      const response = await initChatSession(personaId, resumeSessionId);
       console.log('[chatStore] initSession response:', response);
+
+      // If resuming, restore conversation history
+      const messages = (response.conversation_history || []).map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+        timestamp: new Date(),
+      }));
+
       set({
         sessionId: response.session_id,
         personaInfo: response.persona_info,
-        messages: [],
+        messages,
         isLoading: false,
       });
-      console.log('[chatStore] Session initialized, sessionId:', response.session_id);
+      console.log('[chatStore] Session initialized, sessionId:', response.session_id, 'resumed:', response.resumed, 'messages:', messages.length);
     } catch (error) {
       console.error('[chatStore] initSession error:', error);
       set({ error: error.message, isLoading: false });
+    }
+  },
+
+  fetchPastSessions: async (personaId) => {
+    try {
+      const response = await listChatSessions(personaId);
+      set({ pastSessions: response.sessions || [] });
+    } catch (error) {
+      console.error('[chatStore] fetchPastSessions error:', error);
     }
   },
 
